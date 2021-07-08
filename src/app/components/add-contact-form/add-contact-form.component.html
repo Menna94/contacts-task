@@ -1,0 +1,109 @@
+<div class="contact__wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 offset-3">
+        <form (ngSubmit)="onSubmit(addContact)" #addContact="ngForm">
+          <div class="card">
+            <div class="card-img">
+              <img src="./assets/imgs/avatar-placeholder.png" alt="..." />
+            </div>
+            <div class="card-body">
+              <ul>
+                <li>
+                  <!-- Contact Name -->
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"
+                        ><i class="fas fa-user"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Contact Name"
+                      aria-describedby="basic-addon1"
+                      name="name"
+                      ngModel
+                      #name="ngModel"
+                    />
+                    <div *ngIf="name.invalid">
+                      <p>Please Add a Contact Name</p>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <!-- Contact Phone Number -->
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"
+                        ><i class="fas fa-phone-alt"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Phone"
+                      aria-describedby="basic-addon1"
+                      name="phone"
+                      ngModel
+                      #phone="ngModel"
+                    />
+                    <div *ngIf="phone.invalid">
+                      <p>Please Add a Phone Number</p>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <!-- Contact Address -->
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"
+                        ><i class="fas fa-map-marker"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Address"
+                      aria-describedby="basic-addon1"
+                      name="address"
+                      ngModel
+                    />
+                  </div>
+                </li>
+                <li>
+                  <!-- Contact Notes -->
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"
+                        ><i class="fas fa-sticky-note"></i
+                      ></span>
+                    </div>
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      cols="3"
+                      rows="2"
+                      placeholder="Notes ..."
+                      aria-describedby="basic-addon1"
+                      name="notes"
+                      ngModel
+                    >
+                    </textarea>
+                  </div>
+                </li>
+              </ul>
+
+              <button type="submit" class="btn btn-primary submit">
+                Submit
+              </button>
+              <button class="btn btn-primary" (click)="resetForm(addContact)">
+                Reset
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

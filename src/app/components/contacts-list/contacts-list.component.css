@@ -1,0 +1,31 @@
+.contacts-list {
+  margin-top: 10%;
+  /* background-color: blueviolet; */
+}
+
+/* .contacts-list .container {
+  background-color: rgb(226, 116, 43);
+} */
+.list__header {
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.list__header .col-md-2 {
+  margin-right: 7% !important;
+}
+.searchbar {
+  margin-bottom: 20px;
+}
+
+.contacts-list h3 {
+  text-align: center;
+}
+
+.name-sort {
+  display: inline-block;
+  margin: 0 10px 0 0;
+}
+
+.contacts-list button {
+  margin-right: 5px;
+}

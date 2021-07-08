@@ -1,0 +1,33 @@
+.card {
+  margin-top: 20%;
+  background-color: #d7e7fa;
+  width: 100%;
+}
+.card-title {
+  font-size: 30px;
+}
+.card-img {
+  height: 200px;
+  width: 300px;
+  background-color: bisque;
+  margin: 30px auto;
+}
+.card-img img {
+  width: 100%;
+}
+
+.card-body > ul > li > i {
+  margin-right: 10px;
+  height: 24px;
+  width: 24px;
+  font-size: 18px;
+  color: #757575;
+}
+
+.list-group-item:last-child > p {
+  display: inline;
+}
+
+.to-contacts {
+  margin-top: 10px;
+}
