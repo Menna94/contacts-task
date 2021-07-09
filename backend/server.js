@@ -2,13 +2,26 @@
 const express = require("express"),
   app = express();
 
+// cors
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  next();
+});
+
+// const cors = require("cors");
+// app.use(cors({ origin: "http://localhost:51675" }));
+
 //Configs
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config/config.env" });
-
-// cors
-const cors = require("cors");
-app.use(cors({ origin: "http://localhost:4200" }));
 
 //Routes
 const contactRoutes = require("./routes/contact");
@@ -24,6 +37,4 @@ connectDB();
 app.use("/contacts", contactRoutes);
 
 //
-app.listen(3000, () => {
-  console.log("App listening on port 3000!");
-});
+module.exports = app;

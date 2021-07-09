@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { ContactService } from '../contacts.service';
 
 @Component({
@@ -11,32 +10,22 @@ import { ContactService } from '../contacts.service';
 export class AddContactFormComponent implements OnInit {
   constructor(private _contacts: ContactService) {}
 
-  ngOnInit(): void {
-    this.resetForm();
-  }
+  ngOnInit(): void {}
 
-  resetForm(form?: NgForm) {
-    if (form) {
-      form.reset();
-    }
-    this._contacts.currContact = {
-      _id: '',
-      name: '',
-      phone: null,
-      address: '',
-      notes: '',
-    };
-  }
+  onCreateContact(form: NgForm) {
+    console.log(form.value);
 
-  onSubmit(form: NgForm) {
-    console.log('form submitted' + form.value);
+    // if (form.invalid) {
+    //   return;
+    // }
+    this._contacts.addContct(
+      form.value.name,
+      form.value.phone,
+      form.value.address,
+      form.value.notes
+    );
+    console.log(`Created`);
 
-    if (!form.invalid) {
-      return;
-    }
-    this._contacts.addContct(form.value).subscribe((resData) => {
-      console.log(resData);
-      this.resetForm(form);
-    });
+    form.resetForm();
   }
 }

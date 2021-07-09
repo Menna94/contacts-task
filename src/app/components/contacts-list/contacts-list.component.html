@@ -36,21 +36,102 @@
                 </th>
                 <th>Phone</th>
                 <th>Address</th>
+                <th>Notes</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let contact of contacts">
-                <td>{{ contact.name }}</td>
-                <td>{{ contact.phone }}</td>
-                <td>{{ contact.address }}</td>
+              <tr
+                *ngFor="
+                  let contact of contacts
+                    | slice: (currentPage - 1) * limit:currentPage * limit
+                "
+              >
+                <!-- Contact Name -->
                 <td>
-                  <button class="btn btn-success">
-                    <i class="fas fa-user-edit"></i>
-                  </button>
-                  <button class="btn btn-danger">
-                    <i class="fas fa-user-minus"></i>
-                  </button>
+                  <div *ngIf="!isEdit">
+                    {{ contact.name }}
+                  </div>
+                  <div *ngIf="isEdit">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="name"
+                      [(ngModel)]="contact.name"
+                    />
+                  </div>
+                </td>
+                <!-- Contact Phone -->
+                <td>
+                  <div *ngIf="!isEdit">
+                    {{ contact.phone }}
+                  </div>
+                  <div *ngIf="isEdit">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="phone"
+                      [(ngModel)]="contact.phone"
+                    />
+                  </div>
+                </td>
+                <!-- Contact Address -->
+                <td>
+                  <div *ngIf="!isEdit">
+                    {{ contact.address }}
+                  </div>
+                  <div *ngIf="isEdit">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="address"
+                      [(ngModel)]="contact.address"
+                    />
+                  </div>
+                </td>
+                <!-- Contact Notess -->
+                <td>
+                  <div *ngIf="!isEdit">
+                    {{ contact.notes }}
+                  </div>
+                  <div *ngIf="isEdit">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="notes"
+                      [(ngModel)]="contact.notes"
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div *ngIf="!isEdit">
+                    <button
+                      class="btn btn-success"
+                      (click)="onGetContact(contact._id)"
+                    >
+                      <i class="fas fa-user-edit"></i>
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      (click)="onDelContact(contact._id)"
+                    >
+                      <i class="fas fa-user-minus"></i>
+                    </button>
+                  </div>
+                  <div *ngIf="isEdit">
+                    <button
+                      class="btn btn-info btn-small"
+                      (click)="onUpdateContact(contact)"
+                    >
+                      <i class="far fa-check-circle"></i>
+                    </button>
+                    <button
+                      class="btn btn-primary btn-small"
+                      (click)="onClose(contact)"
+                    >
+                      <i class="far fa-times-circle"></i>
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -60,24 +141,16 @@
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
+                <th>Notes</th>
+                <th>Actions</th>
               </tr>
             </tfoot>
           </table>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-end">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
-                  >Previous</a
-                >
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
+          <ngb-pagination
+            [(page)]="currentPage"
+            [pageSize]="limit"
+            [collectionSize]="contacts.length"
+          ></ngb-pagination>
         </div>
       </div>
     </div>

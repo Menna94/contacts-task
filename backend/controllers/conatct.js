@@ -31,7 +31,32 @@ exports.addContact = async (req, res, next) => {
 //GET /contacts
 exports.getContacts = async (req, res, next) => {
   try {
-    const contacts = await Contact.find();
+    //Pagination
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = 5;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const total = await Contact.countDocuments();
+
+    let query = Contact.find();
+    query = query.skip(startIndex).limit(limit);
+
+    //Pagination Result
+    const pagination = {};
+
+    if (endIndex < total) {
+      pagination.next = {
+        page: page + 1,
+      };
+    }
+
+    if (startIndex > 0) {
+      pagination.prev = {
+        page: page - 1,
+      };
+    }
+
+    const contacts = await query;
 
     if (!contacts) {
       return res.status(400).send({
@@ -42,6 +67,7 @@ exports.getContacts = async (req, res, next) => {
     res.status(200).send({
       success: true,
       data: contacts,
+      pagination,
     });
   } catch (err) {
     res.status(500).send({

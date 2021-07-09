@@ -2,7 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6 offset-3">
-        <form (ngSubmit)="onSubmit(addContact)" #addContact="ngForm">
+        <form
+          (ngSubmit)="onCreateContact(addContactForm)"
+          #addContactForm="ngForm"
+        >
           <div class="card">
             <div class="card-img">
               <img src="./assets/imgs/avatar-placeholder.png" alt="..." />
@@ -94,11 +97,12 @@
                 </li>
               </ul>
 
-              <button type="submit" class="btn btn-primary submit">
+              <button
+                type="submit"
+                class="btn btn-primary submit"
+                [disabled]="addContactForm.invalid"
+              >
                 Submit
-              </button>
-              <button class="btn btn-primary" (click)="resetForm(addContact)">
-                Reset
               </button>
             </div>
           </div>

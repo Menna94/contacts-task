@@ -2,19 +2,62 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Contact } from '../contacts.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
   private contacts: Contact[] = [];
-   private contactsUpdated = new Subject<Contact[]>();
+  private contactsUpdated = new Subject<Contact[]>();
 
   constructor(private _http: HttpClient) {}
 
-  addContct(contact: Contact) {
-    return this._http.post('localhost:3000/contacts/', contact);
+  getContactsUpdatedListener() {
+    return this.contactsUpdated.asObservable();
   }
 
-  getContcts() {
-    this._http.get('localhost:3000/contacts/');
+  addContct(name: string, phone: number, address: string, notes: string) {
+    const contact: Contact = { _id: null, name, phone, address, notes };
+
+    return this._http
+      .post('http://localhost:5000/contacts/', contact)
+      .subscribe((resData) => {
+        console.log(resData);
+        this.contacts.push(contact);
+        this.contactsUpdated.next([...this.contacts]);
+      });
+  }
+
+  getContcts(page: number) {
+    const queryParams = `?page=${page}`;
+    this._http
+      .get<{ data: any }>('http://localhost:5000/contacts' + queryParams)
+      .subscribe((res) => {
+        this.contacts = res.data;
+        this.contactsUpdated.next([...this.contacts]);
+      });
+  }
+
+  getSingleContact(id: string) {
+    this._http.get(`http://localhost:5000/contacts/${id}`).subscribe((res) => {
+      console.log(res);
+    });
+  }
+
+  updateContact(
+    _id: string,
+    name: string,
+    phone: number,
+    address: string,
+    notes: string
+  ) {
+    const contact: Contact = { _id, name, phone, address, notes };
+
+    this._http
+      .put(`http://localhost:5000/contacts/${_id}`, contact)
+      .subscribe((res) => {
+        console.log(res);
+        this.contacts.push(contact);
+        this.contactsUpdated.next([...this.contacts]);
+      });
   }
 }
