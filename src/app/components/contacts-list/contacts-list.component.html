@@ -6,9 +6,10 @@
         <div class="col-md-4">
           <input
             type="text"
-            name=""
-            id=""
-            placeholder="Search"
+            name="searchName"
+            [(ngModel)]="searchName"
+            (ngModelChange)="onSearchName()"
+            placeholder="Search by Name"
             class="form-control searchbar"
           />
         </div>
@@ -27,15 +28,11 @@
           >
             <thead>
               <tr>
-                <th class="contact-name">
-                  Name
-                  <div class="name-sort">
-                    <a> <i class="fas fa-sort-up"></i></a>
-                    <a><i class="fas fa-sort-down"></i></a>
-                  </div>
-                </th>
+                <th (click)="sort('name')">Name <i class="fas fa-sort"></i></th>
                 <th>Phone</th>
-                <th>Address</th>
+                <th (click)="sort('address')">
+                  Address <i class="fas fa-sort"></i>
+                </th>
                 <th>Notes</th>
                 <th>Actions</th>
               </tr>
@@ -44,7 +41,7 @@
               <tr
                 *ngFor="
                   let contact of contacts
-                    | slice: (currentPage - 1) * limit:currentPage * limit
+                    | slice: (page - 1) * pageSize:page * pageSize
                 "
               >
                 <!-- Contact Name -->
@@ -147,9 +144,10 @@
             </tfoot>
           </table>
           <ngb-pagination
-            [(page)]="currentPage"
-            [pageSize]="limit"
+            [(page)]="page"
+            [pageSize]="pageSize"
             [collectionSize]="contacts.length"
+            (pageChange)="onChange()"
           ></ngb-pagination>
         </div>
       </div>

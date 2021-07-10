@@ -13,8 +13,11 @@ export class ContactsListComponent implements OnInit, OnDestroy {
   isEdit: boolean = false;
   private contactsSub: Subscription;
   //pagination
-  limit = 5;
-  currentPage: number = 1;
+  pageSize = 5;
+  page: number = 1;
+  //search
+  searchName: string;
+  searchPhone: number;
 
   constructor(private _contacts: ContactService) {}
 
@@ -22,8 +25,29 @@ export class ContactsListComponent implements OnInit, OnDestroy {
     this.fetchAllContacts();
   }
 
+  //Search
+  onSearchName() {
+    if (this.searchName == '') {
+      this.ngOnInit();
+    }
+    this.contacts = this.contacts.filter((contact) => {
+      return contact.name
+        .toLocaleLowerCase()
+        .match(this.searchName.toLocaleLowerCase());
+    });
+  }
+  onSearchPhone() {
+    if (this.searchPhone == null) {
+      this.ngOnInit();
+    }
+    this.contacts = this.contacts.filter((contact) => {
+      return contact.phone == this.searchPhone;
+    });
+  }
+
+  // Get All Contacts + Pagination
   fetchAllContacts() {
-    this._contacts.getContcts(this.currentPage);
+    this._contacts.getContcts(this.page);
     this.contactsSub = this._contacts
       .getContactsUpdatedListener()
       .subscribe((contacts: Contact[]) => {
@@ -31,13 +55,14 @@ export class ContactsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  onClose(data) {
-    this.isEdit = false;
+  onChange() {
+    this.page = this.page + 1;
+    this._contacts.getContcts(this.page);
   }
 
-  onGetContact(id: string) {
-    this.isEdit = true;
-    this._contacts.getSingleContact(id);
+  // When EditMode
+  onClose(data) {
+    this.isEdit = false;
   }
 
   onUpdateContact(contact) {
@@ -46,8 +71,16 @@ export class ContactsListComponent implements OnInit, OnDestroy {
     this._contacts.updateContact(_id, name, phone, address, notes);
   }
 
+  // Shared Between Update & Delete
+  onGetContact(id: string) {
+    this.isEdit = true;
+    this._contacts.getSingleContact(id);
+  }
+
+  // When Deleting
   onDelContact(id: string) {}
 
+  //Unsubscribe the contacts subscribtion
   ngOnDestroy() {
     this.contactsSub.unsubscribe();
   }
