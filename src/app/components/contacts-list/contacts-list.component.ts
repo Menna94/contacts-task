@@ -17,7 +17,6 @@ export class ContactsListComponent implements OnInit, OnDestroy {
   page: number = 1;
   //search
   searchName: string;
-  searchPhone: number;
 
   constructor(private _contacts: ContactService) {}
 
@@ -36,15 +35,13 @@ export class ContactsListComponent implements OnInit, OnDestroy {
         .match(this.searchName.toLocaleLowerCase());
     });
   }
-  onSearchPhone() {
-    if (this.searchPhone == null) {
-      this.ngOnInit();
-    }
-    this.contacts = this.contacts.filter((contact) => {
-      return contact.phone == this.searchPhone;
-    });
-  }
 
+  //sort
+  reverse: boolean = false;
+  sort(key) {
+    if (key === 'name') {
+    }
+  }
   // Get All Contacts + Pagination
   fetchAllContacts() {
     this._contacts.getContcts(this.page);
@@ -78,7 +75,12 @@ export class ContactsListComponent implements OnInit, OnDestroy {
   }
 
   // When Deleting
-  onDelContact(id: string) {}
+  onDelContact(id: string, name: string) {
+    if (confirm('Are you sure to delete ' + name)) {
+      this._contacts.delContact(id);
+      return this.contacts.find((contact) => contact._id !== id);
+    }
+  }
 
   //Unsubscribe the contacts subscribtion
   ngOnDestroy() {

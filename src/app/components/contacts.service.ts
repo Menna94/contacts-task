@@ -43,6 +43,16 @@ export class ContactService {
     });
   }
 
+  getContactsSort(key: string, reverse: boolean) {
+    const queryParams = `?sort=${key}`;
+    this._http
+      .get<{ data: any }>('http://localhost:5000/contacts' + queryParams)
+      .subscribe((res) => {
+        this.contacts = res.data;
+        this.contactsUpdated.next([...this.contacts]);
+      });
+  }
+
   updateContact(
     _id: string,
     name: string,
@@ -57,6 +67,15 @@ export class ContactService {
       .subscribe((res) => {
         console.log(res);
         this.contacts.push(contact);
+        this.contactsUpdated.next([...this.contacts]);
+      });
+  }
+
+  delContact(_id: string) {
+    this._http
+      .delete(`http://localhost:5000/contacts/${_id}`)
+      .subscribe((res) => {
+        console.log(res);
         this.contactsUpdated.next([...this.contacts]);
       });
   }
