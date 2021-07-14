@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Contact } from 'src/app/contacts.model';
 import { ContactService } from '../contacts.service';
@@ -14,11 +15,16 @@ export class ContactsListComponent implements OnInit, OnDestroy {
   private contactsSub: Subscription;
   //pagination
   pageSize = 5;
-  page: number = 1;
+  page: number;
+  total: number = this.contacts.length;
   //search
   searchName: string;
 
-  constructor(private _contacts: ContactService) {}
+  constructor(
+    private _contacts: ContactService,
+    private _router: Router,
+    private _route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.fetchAllContacts();
@@ -44,7 +50,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
   }
   // Get All Contacts + Pagination
   fetchAllContacts() {
-    this._contacts.getContcts(this.page);
+    this._contacts.getContcts(1);
     this.contactsSub = this._contacts
       .getContactsUpdatedListener()
       .subscribe((contacts: Contact[]) => {
@@ -52,8 +58,8 @@ export class ContactsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  onChange() {
-    this.page = this.page + 1;
+  onChange(currPage: number) {
+    this.page = this.pageSize * (currPage - 1);
     this._contacts.getContcts(this.page);
   }
 
@@ -78,7 +84,6 @@ export class ContactsListComponent implements OnInit, OnDestroy {
   onDelContact(id: string, name: string) {
     if (confirm('Are you sure to delete ' + name)) {
       this._contacts.delContact(id);
-      return this.contacts.find((contact) => contact._id !== id);
     }
   }
 

@@ -66,7 +66,6 @@ export class ContactService {
       .put(`http://localhost:5000/contacts/${_id}`, contact)
       .subscribe((res) => {
         console.log(res);
-        this.contacts.push(contact);
         this.contactsUpdated.next([...this.contacts]);
       });
   }
@@ -75,7 +74,8 @@ export class ContactService {
     this._http
       .delete(`http://localhost:5000/contacts/${_id}`)
       .subscribe((res) => {
-        console.log(res);
+        console.log('this contact is deleted');
+        this.contacts = this.contacts.filter((contact) => contact._id !== _id);
         this.contactsUpdated.next([...this.contacts]);
       });
   }

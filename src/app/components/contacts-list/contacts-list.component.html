@@ -41,7 +41,13 @@
               <tr
                 *ngFor="
                   let contact of contacts
-                    | slice: (page - 1) * pageSize:page * pageSize
+                    | paginate
+                      : {
+                          id: 'contacts-list',
+                          itemsPerPage: pageSize,
+                          currentPage: page,
+                          totalItems: total
+                        }
                 "
               >
                 <!-- Contact Name -->
@@ -143,12 +149,16 @@
               </tr>
             </tfoot>
           </table>
-          <ngb-pagination
-            [(page)]="page"
-            [pageSize]="pageSize"
-            [collectionSize]="contacts.length"
-            (pageChange)="onChange()"
-          ></ngb-pagination>
+          <div>
+            <pagination-controls
+              id="contacts-list"
+              (pageChange)="page = $event"
+              directionLinks="true"
+              previousLabel="Previous"
+              nextLabel="Next"
+            >
+            </pagination-controls>
+          </div>
         </div>
       </div>
     </div>

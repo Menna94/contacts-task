@@ -67,13 +67,15 @@ exports.getContacts = async (req, res, next) => {
     }
 
     //Pagination
-    const page = parseInt(req.query.page, 10) || 1;
+    const page = +req.query.page || 1;
     const limit = 5;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     const total = await Contact.countDocuments();
 
-    query = query.skip(startIndex).limit(limit);
+    query = query
+      .skip(startIndex) //if you're on page 2 skip contacts on page 1 (first 5 contacts)
+      .limit(limit); //narrowing the number of fetched contacts in each page = 5
 
     //Executing query
     const results = await query;

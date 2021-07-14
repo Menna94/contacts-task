@@ -25,6 +25,7 @@ dotenv.config({ path: "./config/config.env" });
 
 //Routes
 const contactRoutes = require("./routes/contact");
+const authRoutes = require("./routes/auth");
 
 //body parser
 app.use(express.json());
@@ -35,6 +36,7 @@ connectDB();
 
 //Mount Routes
 app.use("/contacts", contactRoutes);
+app.use("/auth", authRoutes);
 
 //
 module.exports = app;

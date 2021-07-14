@@ -2,14 +2,8 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6 offset-3">
-        <form
-          (ngSubmit)="onCreateContact(addContactForm)"
-          #addContactForm="ngForm"
-        >
+        <form (ngSubmit)="onSubmit(addContactForm)" #addContactForm="ngForm">
           <div class="card">
-            <div class="card-img">
-              <img src="./assets/imgs/avatar-placeholder.png" alt="..." />
-            </div>
             <div class="card-body">
               <ul>
                 <li>

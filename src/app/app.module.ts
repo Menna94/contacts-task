@@ -12,7 +12,7 @@ import { ContactsListComponent } from './components/contacts-list/contacts-list.
 import { FormComponent } from './components/form/form.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddContactFormComponent } from './components/add-contact-form/add-contact-form.component';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,6 +27,7 @@ import { AddContactFormComponent } from './components/add-contact-form/add-conta
     NgbModule,
     FormsModule,
     HttpClientModule,
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
